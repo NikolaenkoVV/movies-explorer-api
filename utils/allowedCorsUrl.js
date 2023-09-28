@@ -1,7 +1,7 @@
 const allowedCorsUrl = [
-  'http://localhost:3001',
-  'https://mestokd.students.nomoredomainsrocks.ru',
-  'http://mestokd.students.nomoredomainsrocks.ru',
+  'http://localhost:3000',
+  'https://moviedallas.nomoredomainsrocks.ru',
+  'http://moviedallas.nomoredomainsrocks.ru',
 ];
 
 module.exports = allowedCorsUrl;

@@ -24,5 +24,5 @@ Backend-часть дипломного проекта курса "Frontend-ра
 
 IP 51.250.81.196
 
-Backend https://api.mestokd.students.nomoredomainsrocks.ru
+Backend https://api.moviedallas.nomoredomainsrocks.ru/
 
