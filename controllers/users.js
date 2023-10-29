@@ -12,19 +12,26 @@ const ConflictError = require('../errors/conflict-error');
 
 const createUser = (req, res, next) => {
   const {
-    email, password, name,
+    name, email, password,
   } = req.body;
   bcrypt
     .hash(password, 10)
     .then((hash) => userModel.create({
+      name,
       email,
       password: hash,
-      name,
     }))
     .then((user) => {
       const userObject = user.toObject();
       delete userObject.password;
-      res.status(STATUS_CREATED).send(userObject);
+      const token = jwt.sign(
+        { _id: user._id },
+        SECRET_JWT,
+        {
+          expiresIn: '7d',
+        },
+      );
+      res.status(STATUS_CREATED).send({ token, user: userObject });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -42,6 +49,8 @@ const loginUser = (req, res, next) => {
   userModel
     .findUserByCredentials(email, password)
     .then((user) => {
+      const userObject = user.toObject();
+      delete userObject.password;
       const token = jwt.sign(
         { _id: user._id },
         SECRET_JWT,
@@ -49,7 +58,7 @@ const loginUser = (req, res, next) => {
           expiresIn: '7d',
         },
       );
-      res.status(STATUS_OK).send({ token });
+      res.status(STATUS_OK).send({ token, user: userObject });
     })
     .catch(next);
 };
@@ -90,6 +99,9 @@ const updateUserInfo = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         return next(new BadRequestError('Переданы некорректные данные'));
+      }
+      if (err.code === 11000) {
+        return next(new ConflictError('Пользователь с такой электронной почтой уже зарегистрирован'));
       }
       return next(err);
     });

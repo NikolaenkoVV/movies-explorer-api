@@ -22,7 +22,7 @@ Backend-часть дипломного проекта курса "Frontend-ра
 
 ## Ссылки на проект
 
-IP 51.250.81.196
+IP 130.193.51.138
 
 Backend https://api.moviedallas.nomoredomainsrocks.ru/
 
